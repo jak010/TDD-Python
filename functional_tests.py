@@ -1,27 +1,6 @@
 from selenium import webdriver
 import unittest
 from selenium.webdriver.common.keys import Keys
-from lists.models import Item
-
-
-class ItemModelTest(unittest.TestCase):
-
-    def test_saving_and_retrieving_items(self):
-        first_item = Item()
-        first_item.text='첫 번째 아이템'
-        first_item.save()
-
-        second_item = Item()
-        second_item.text='두 번째 아이템'
-        second_item.save()
-
-        saved_items = Item.objects.all()
-        self.assertEqual(saved_items.count(), 2)
-
-        first_saved_item = saved_items[0]
-        second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.text, '첫 번째 아이템')
-        self.assertEqual(second_item.text, '두 번째 아이템')
 
 class NewVisitorTest(unittest.TestCase):
     def setUp(self) -> None:
@@ -68,8 +47,8 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
 
         # 페이지는 다시 갱신되고, 두 개 아이템이 목록에 보인다
-        self.check_for_row_in_list_table('2: 공작깃털을 이용해서 그물 만들기')
         self.check_for_row_in_list_table('1: 공작깃털 사기')
+        self.check_for_row_in_list_table('2: 공작깃털을 이용해서 그물 만들기')
 
         # 에디스는 사이트가 입력한 목록을 저장하고 있는 궁금하다
         # 사이트는 그녀를 위한 특정 URL을 생성해준다.
