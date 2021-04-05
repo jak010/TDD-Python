@@ -10,8 +10,8 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser = webdriver.Chrome(path)
         self.browser.implicitly_wait(3)
 
-    # def tearDown(self) -> None:
-    #     self.browser.quit()
+    def tearDown(self) -> None:
+        self.browser.close()
 
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id('id_list_table')
@@ -39,6 +39,8 @@ class NewVisitorTest(LiveServerTestCase):
         # 엔터키를 치면 페이지가 갱신되고 작업 목록에
         # "1: 공작깃털 사기" 아이템이 추가된다.
         inputbox.send_keys(Keys.ENTER)
+        edith_list_url =  self.browser.current_url
+        self.assertRegex(edith_list_url, "/lists/.+")
         self.check_for_row_in_list_table('1: 공작깃털 사기')
 
         # 추가 아이템을 입력할 수 있는 여분의 텍스트 상자가 존재한다.

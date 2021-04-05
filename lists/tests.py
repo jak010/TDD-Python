@@ -45,32 +45,34 @@ class HomePageTest(TestCase):
         response = home_page(request)
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
 
     def test_home_page_only_saves_items_when_necessary(self):
         request = HttpRequest()
         home_page(request)
         self.assertEqual(Item.objects.count(), 0)
 
-    def test_home_page_displays_all_list_items(self):
-        Item.objects.create(text='itemey 1')
-        Item.objects.create(text='itemey 2')
+    # Page 104, 삭제 처리
+    # def test_home_page_displays_all_list_items(self):
+    #     Item.objects.create(text='itemey 1')
+    #     Item.objects.create(text='itemey 2')
+    #
+    #     request = HttpRequest()
+    #     response = home_page(request)
+    #
+    #     self.assertIn('itemey 1', response.content.decode())
+    #     self.assertIn('itemey 2', response.content.decode())
 
-        request = HttpRequest()
-        response = home_page(request)
-
-        self.assertIn('itemey 1', response.content.decode())
-        self.assertIn('itemey 2', response.content.decode())
 
 class ItemModelTest(TestCase):
 
     def test_saving_and_retrieving_items(self):
         first_item = Item()
-        first_item.text='첫 번째 아이템'
+        first_item.text = '첫 번째 아이템'
         first_item.save()
 
         second_item = Item()
-        second_item.text='두 번째 아이템'
+        second_item.text = '두 번째 아이템'
         second_item.save()
 
         saved_items = Item.objects.all()
@@ -80,3 +82,19 @@ class ItemModelTest(TestCase):
         second_saved_item = saved_items[1]
         self.assertEqual(first_saved_item.text, '첫 번째 아이템')
         self.assertEqual(second_item.text, '두 번째 아이템')
+
+
+class ListViewTest(TestCase):
+
+    def test_uses_list_template(self):
+        response = self.client.get("/lists/the-only-list-in-the-world/")
+        self.assertTemplateUsed(response, "list.html")
+
+    def test_home_page_displays_all_list_items(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+
+        response = self.client.get("/lists/the-only-list-in-the-world/")
+
+        self.assertContains(response, 'itemey 1')
+        self.assertContains(response, 'itemey 2')
