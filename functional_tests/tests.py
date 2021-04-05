@@ -57,7 +57,7 @@ class NewVisitorTest(LiveServerTestCase):
         # 에디스는 사이트가 입력한 목록을 저장하고 있는 궁금하다
         # 사이트는 그녀를 위한 특정 URL을 생성해준다.
         # 이 때 URL에 대한 설명도 함께 제공된다.
-        self.fail('Finish the test!')
+        # self.fail('Finish the test!')
 
         # 해당 URL 접속하면 그녀가 만든 작업 목록이 그대로 있는 것을 확인할 수 있다.
         # 만족하고 잠자리에 든다
